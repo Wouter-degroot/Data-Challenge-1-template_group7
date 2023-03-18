@@ -1,6 +1,6 @@
 local/
 Data_Challenge_1_template.egg-info/
-data/
+dc1/data/
 model_weights/
 *.ipynb
 artifacts/

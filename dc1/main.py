@@ -78,20 +78,24 @@ def main(args: argparse.Namespace, activeloop: bool = True) -> None:
         if activeloop:
 
             # Training:
-            losses = train_model(model, train_sampler, optimizer, loss_function, device)
+            TrainingValues = train_model(model, train_sampler, optimizer, loss_function, device)
+            losses = TrainingValues[0]
             # Calculating and printing statistics:
             mean_loss = sum(losses) / len(losses)
             mean_losses_train.append(mean_loss)
+            mean_confidence = abs(sum(TrainingValues[1])/ len(TrainingValues[1]))
             print(f"\nEpoch {e + 1} training done, loss on train set: {mean_loss}\n")
-
+            print(f"\nConfidence value is {mean_confidence}")
             # Testing:
-            losses = test_model(model, test_sampler, loss_function, device)
+            TestValues = test_model(model, train_sampler, loss_function, device)
+            losses = TestValues[0]
 
             # # Calculating and printing statistics:
             mean_loss = sum(losses) / len(losses)
             mean_losses_test.append(mean_loss)
+            mean_confidence = abs(sum(TestValues[1])/ len(TestValues[1]))
             print(f"\nEpoch {e + 1} testing done, loss on test set: {mean_loss}\n")
-
+            print(f"\nConfidence value is {mean_confidence}")
             ### Plotting during training
             plotext.clf()
             plotext.scatter(mean_losses_train, label="train")
